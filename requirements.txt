@@ -1,0 +1,6 @@
+requests
+yfinance
+schedule
+python-dotenv
+requests
+python-telegram-bot==13.15
