@@ -19,3 +19,9 @@ print("Bias: BUY CALL")
 print("Risk: 20%")
 print("Target: 30%")
 print("⚠️ Manual trade only")
+import time
+
+print("Barsana worker started...")
+
+while True:
+    time.sleep(30)
