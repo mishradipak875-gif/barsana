@@ -1,5 +1,5 @@
 import time
-
+from alerts import send_telegram
 print("✅ BARSANA STARTED")
 
 while True:
