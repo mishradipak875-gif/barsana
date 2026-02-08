@@ -1,43 +1,32 @@
+import os
 import requests
-import time
+
+DHAN_CLIENT_ID = os.getenv("DHAN_CLIENT_ID")
+DHAN_ACCESS_TOKEN = os.getenv("DHAN_ACCESS_TOKEN")
+
+BASE_URL = "https://api.dhan.co/v2"
 
 HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
-    "Accept-Language": "en-US,en;q=0.9",
-    "Accept-Encoding": "gzip, deflate, br",
-    "Connection": "keep-alive"
+    "access-token":eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJkaGFuIiwicGFydG5lcklkIjoiIiwiZXhwIjoxNzcwNjE4Mzk2LCJpYXQiOjE3NzA1MzE5OTYsInRva2VuQ29uc3VtZXJUeXBlIjoiU0VMRiIsIndlYmhvb2tVcmwiOiIiLCJkaGFuQ2xpZW50SWQiOiIxMTEwMzI4NjM5In0.XbJGRGVMkWqDg1BET9ovOxd0Qo9mtnJn_P5ncjSiUbkYIcNSH_EG4hIwyx42MpAbPqge9u2hIUyHgJh9M_k9BA ,
+    "client-id": 1110328639,
+    "Content-Type": "application/json"
 }
 
-session = requests.Session()
-session.headers.update(HEADERS)
+def get_index_price(symbol):
+    url = f"{BASE_URL}/market/ltp"
 
-def init_nse():
-    try:
-        session.get("https://www.nseindia.com", timeout=5)
-        time.sleep(1)
-    except:
-        pass
+    payload = {
+        "securities": {
+            "BSE": [symbol]
+        }
+    }
 
-def get_index_price(symbol, retries=3):
-    for attempt in range(1, retries + 1):
-        try:
-            init_nse()
-            url = "https://www.nseindia.com/api/allIndices"
-            r = session.get(url, timeout=5)
+    r = requests.post(url, json=payload, headers=HEADERS, timeout=10)
+    r.raise_for_status()
+    data = r.json()
 
-            if r.status_code != 200:
-                raise Exception("Bad status")
+    return data["data"]["BSE"][symbol]["last_price"]
 
-            data = r.json()["data"]
-            for item in data:
-                if symbol.upper() in item["index"]:
-                    return float(item["last"])
-
-        except Exception as e:
-            print(f"⚠️ NSE attempt {attempt} failed, retrying...")
-            time.sleep(2 * attempt)
-
-    return None
 
 def atm_strike(price, step):
     return round(price / step) * step
