@@ -1,23 +1,14 @@
-import time
-
-print("✅ BARSANA STARTED")
+sent = False
 
 while True:
     try:
+        if not sent:
+            send_telegram("🚀 Barsana running on Railway")
+            sent = True
+
         print("⏳ alive")
 
-        # ---- YOUR MAIN LOGIC CALL ----
-        # Example:
-        # run_strategies()
-        # fetch_nse_data()
-        # process_signals()
-
-    except KeyError as e:
-        print(f"❌ KeyError missing key: {e}")
-        time.sleep(15)
-
     except Exception as e:
-        print(f"❌ Unexpected error: {e}")
-        time.sleep(15)
+        print(e)
 
     time.sleep(10)
