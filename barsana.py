@@ -2,6 +2,15 @@ import os
 import time
 import requests
 
+if os.path.exists("sent.flag"):
+    print("ℹ️ Telegram already sent")
+else:
+    # send telegram here
+    open("sent.flag", "w").close()
+import os
+import time
+import requests
+
 print("✅ BARSANA STARTED")
 
 # =========================
@@ -41,3 +50,13 @@ send_telegram("🚀 Barsana is LIVE and Telegram is working!")
 while True:
     print("⏳ alive")
     time.sleep(10)
+START
+↓
+Send "BARSANA STARTED" to Telegram
+↓
+WHILE True:
+    Fetch LIVE data (Dhan / fallback)
+    If trade condition:
+        Send Telegram alert
+    Sleep (60 sec)
+                                                                                                                                   
