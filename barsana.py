@@ -1,32 +1,22 @@
 import os
 import time
 import requests
-
-if os.path.exists("sent.flag"):
-    print("ℹ️ Telegram already sent")
-else:
-    # send telegram here
-    open("sent.flag", "w").close()
-import os
-import time
-import requests
-
-print("✅ BARSANA STARTED")
+from datetime import datetime
 
 # =========================
-# TELEGRAM CONFIG
+# TELEGRAM FUNCTION
 # =========================
-BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
-CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+def send_telegram(message: str):
+    token = os.getenv("8475545907:AAG228X4fjTNPj2vlkhbifnP5K_lNnix-h4")
+    chat_id = os.getenv("1288789590")
 
-def send_telegram(message):
-    if not BOT_TOKEN or not CHAT_ID:
+    if not token or not chat_id:
         print("❌ Telegram env vars missing")
         return
 
-    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+    url = f"https://api.telegram.org/bot{token}/sendMessage"
     payload = {
-        "chat_id": CHAT_ID,
+        "chat_id": chat_id,
         "text": message
     }
 
@@ -35,28 +25,37 @@ def send_telegram(message):
         if r.status_code == 200:
             print("📨 Telegram message sent")
         else:
-            print("❌ Telegram error:", r.text)
+            print(f"❌ Telegram error: {r.text}")
     except Exception as e:
-        print("❌ Telegram exception:", e)
+        print(f"❌ Telegram exception: {e}")
+
 
 # =========================
-# TEST TELEGRAM ON START
+# BARSANA START
 # =========================
-send_telegram("🚀 Barsana is LIVE and Telegram is working!")
+print("✅ BARSANA STARTED")
+send_telegram("🚀 BARSANA LIVE ON RAILWAY")
+
 
 # =========================
-# KEEP ALIVE LOOP
+# MAIN LOOP (KEEP ALIVE)
 # =========================
 while True:
-    print("⏳ alive")
-    time.sleep(10)
-START
-↓
-Send "BARSANA STARTED" to Telegram
-↓
-WHILE True:
-    Fetch LIVE data (Dhan / fallback)
-    If trade condition:
-        Send Telegram alert
-    Sleep (60 sec)
-                                                                                                                                   
+    try:
+        now = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+        print(f"⏳ alive | {now}")
+
+        # ----------------------------------
+        # PLACE STRATEGY CODE HERE LATER
+        # ----------------------------------
+        # Example (future):
+        # signal = check_market()
+        # if signal:
+        #     send_telegram(signal)
+
+        time.sleep(60)  # VERY IMPORTANT (prevents Railway restart)
+
+    except Exception as e:
+        print(f"❌ Runtime error: {e}")
+        send_telegram(f"❌ Barsana error: {e}")
+        time.sleep(30)
